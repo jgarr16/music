@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+.Python
+.venv/
+venv/
+.env
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+.mypy_cache/
+output/*.csv
+!output/sample_*.csv
+# Optional large local library exports (keep yours untracked if preferred)
+/ace.xml
+playwright-report/
+screenshots/

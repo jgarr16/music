@@ -1,0 +1,14 @@
+[thresholds]
+exact_min_score = 92
+probable_min_score = 78
+max_search_results = 12
+primary_query = "artist_title"
+strip_noise_terms = true
+
+[playwright]
+freegal_base_url = "https://freegalmusic.com"
+headless = false
+login_wait_timeout_sec = 600
+navigation_timeout_ms = 45000
+action_timeout_ms = 20000
+post_login_settle_sec = 3

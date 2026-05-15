@@ -1,0 +1,2 @@
+source_index,playlist_name,source_artist,source_title,source_album,query_used,freegal_title,freegal_artist,confidence,status,all_queries_tried
+0,Test Mix,Heart,Barracuda,Greatest Hits,Heart Barracuda,Barracuda,Heart,100.0,exact,"[""artist_title=Heart Barracuda""]"

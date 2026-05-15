@@ -1,0 +1,2 @@
+index,playlist_name,artist,title,album,duration_ms,kind,track_id,search_artist_title,search_title_artist,search_title_only,original_json
+0,Test Mix,Heart,Barracuda,Greatest Hits,261400,Apple Music AAC audio file,100,Heart Barracuda,Barracuda Heart,Barracuda,"{""_search_artist_title"": ""Heart Barracuda"", ""_search_title_artist"": ""Barracuda Heart"", ""_search_title_only"": ""Barracuda""}"

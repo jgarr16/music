@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Tracks</key>
+	<dict>
+		<key>100</key>
+		<dict>
+			<key>Track ID</key><integer>100</integer>
+			<key>Name</key><string>Barracuda (Remastered)</string>
+			<key>Artist</key><string>Heart</string>
+			<key>Album</key><string>Greatest Hits</string>
+			<key>Kind</key><string>Apple Music AAC audio file</string>
+			<key>Total Time</key><integer>261400</integer>
+		</dict>
+		<key>101</key>
+		<dict>
+			<key>Track ID</key><integer>101</integer>
+			<key>Name</key><string>Episode 1</string>
+			<key>Artist</key><string>Podcaster</string>
+			<key>Kind</key><string>MPEG-4 podcast</string>
+		</dict>
+	</dict>
+	<key>Playlists</key>
+	<array>
+		<dict>
+			<key>Name</key><string>Test Mix</string>
+			<key>Playlist Items</key>
+			<array>
+				<dict><key>Track ID</key><integer>100</integer></dict>
+				<dict><key>Track ID</key><integer>101</integer></dict>
+			</array>
+		</dict>
+	</array>
+</dict>
+</plist>
