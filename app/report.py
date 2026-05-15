@@ -61,7 +61,7 @@ def write_parsed_tracks(path: Path, tracks: Iterable[ParsedTrack]) -> None:
                     "search_artist_title": t.original_fields.get("_search_artist_title", ""),
                     "search_title_artist": t.original_fields.get("_search_title_artist", ""),
                     "search_title_only": t.original_fields.get("_search_title_only", ""),
-                    "original_json": json.dumps(t.original_fields, ensure_ascii=False),
+                    "original_json": json.dumps(t.original_fields, ensure_ascii=False, default=str),
                 }
             )
     LOG.info("Wrote %s parsed tracks to %s", len(rows), path)
