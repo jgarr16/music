@@ -16,6 +16,26 @@ This repository contains a **CLI-first Python tool** that reads a **Music / iTun
 
 ## Setup
 
+### With [UV](https://docs.astral.sh/uv/) (recommended)
+
+From the repo root:
+
+```bash
+cd music
+uv sync --group dev          # editable install + dev deps (pytest, etc.)
+uv run playwright install chromium
+```
+
+Run the CLI via `uv run` (uses the project environment without activating a venv):
+
+```bash
+uv run python -m app parse --input tests/fixtures/minimal_library.xml --out output/
+```
+
+To refresh the lockfile after dependency edits: `uv lock` (then commit `uv.lock` if you track it).
+
+### Without UV (pip + venv)
+
 ```bash
 cd music
 python3.12 -m venv .venv
@@ -35,13 +55,15 @@ Thresholds, query order, and Playwright timeouts live in **`config/default.toml`
 ### 1. Parse Apple XML → `parsed_tracks.csv`
 
 ```bash
-python -m app parse --input /path/to/playlist.xml --out output/
+uv run python -m app parse --input /path/to/playlist.xml --out output/
 ```
+
+With an activated venv, use `python -m app ...` instead of `uv run python -m app ...`.
 
 If the file contains **multiple playlists**, pass the playlist’s **Name** field:
 
 ```bash
-python -m app parse --input library.xml --out output/ --playlist-name "Ace"
+uv run python -m app parse --input library.xml --out output/ --playlist-name "Ace"
 ```
 
 Outputs:
@@ -54,13 +76,13 @@ Outputs:
 Opens Chromium (headed by default), navigates to Freegal, then **pauses for you to log in** at the terminal. For each track it runs catalog search, collects candidate titles/artists, and **fuzzy-scores** the best hit.
 
 ```bash
-python -m app match --input output/parsed_tracks.csv --out output/
+uv run python -m app match --input output/parsed_tracks.csv --out output/
 ```
 
 **Offline / CI (no browser, no hits):**
 
 ```bash
-python -m app match --input output/parsed_tracks.csv --out output/ --offline
+uv run python -m app match --input output/parsed_tracks.csv --out output/ --offline
 ```
 
 Outputs:
@@ -73,13 +95,13 @@ Outputs:
 **Dry-run** (no browser; prints what would be queued):
 
 ```bash
-python -m app freegal-sync --input output/matches.csv --playlist "My Freegal Playlist" --dry-run
+uv run python -m app freegal-sync --input output/matches.csv --playlist "My Freegal Playlist" --dry-run
 ```
 
 **Apply** (opens browser, login pause, then attempts UI automation):
 
 ```bash
-python -m app freegal-sync --input output/matches.csv --playlist "My Freegal Playlist" --apply
+uv run python -m app freegal-sync --input output/matches.csv --playlist "My Freegal Playlist" --apply
 ```
 
 - By default only **`exact`** matches are queued. Add **`--approve-probable`** to include fuzzy **`probable`** rows.  
@@ -90,7 +112,7 @@ python -m app freegal-sync --input output/matches.csv --playlist "My Freegal Pla
 
 ## Updating Freegal selectors
 
-1. Run `python -m app match ...` or `freegal-sync --apply` with `headless = false` in `config/default.toml`.  
+1. Run `uv run python -m app match ...` or `freegal-sync --apply` with `headless = false` in `config/default.toml`.  
 2. Open DevTools, inspect the **search box**, **result list items**, and **add-to-playlist** controls.  
 3. Edit **`app/selectors.py`** (`FreegalSelectors`) with stable CSS or text-based `locator` strategies.  
 4. Prefer attributes like `[data-testid=...]` when available; avoid long positional `nth()` chains.  
@@ -99,7 +121,8 @@ python -m app freegal-sync --input output/matches.csv --playlist "My Freegal Pla
 ## Tests
 
 ```bash
-pytest
+uv run pytest
+# or: pytest  (inside an activated venv)
 ```
 
 Includes unit tests for XML parsing, normalization, fuzzy ranking, a small **integration** parse+match path with a **mocked** search function, and a **mocked** `run_browser_session` hook.
