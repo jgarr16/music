@@ -12,3 +12,6 @@ login_wait_timeout_sec = 600
 navigation_timeout_ms = 45000
 action_timeout_ms = 20000
 post_login_settle_sec = 3
+search_results_wait_ms = 6000
+search_results_poll_ms = 400
+search_results_max_nodes = 80

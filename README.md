@@ -85,6 +85,14 @@ uv run python -m app match --input output/parsed_tracks.csv --out output/
 uv run python -m app match --input output/parsed_tracks.csv --out output/ --offline
 ```
 
+**Smoke test only the first N rows** (sorted by `index` from the parsed CSV — same order as the playlist):
+
+```bash
+uv run python -m app match --input output/parsed_tracks.csv --out output/match-sample --limit 25
+```
+
+Use a separate `--out` directory if you do not want to overwrite a full `matches.csv` run.
+
 Outputs:
 
 - `output/matches.csv` — source row, query used, best Freegal hit, confidence, status (`exact` / `probable` / `not_found`)  
@@ -135,6 +143,8 @@ See **`output/sample_parsed_tracks.csv`** and **`output/sample_matches.csv`** fo
 
 | Symptom | What to try |
 |--------|-------------|
+| Terminal sits at “Press Enter when logged in” | That is **by design**: finish logging in in the browser, then press **Enter** in the terminal to continue. |
+| Each track takes many minutes / “stuck” searching | Older builds waited the full timeout **per** CSS fallback. Current code uses one **total** budget (`search_results_wait_ms`, default **6s**) in `config/default.toml`. Raise it if your network or Freegal is slow. |
 | `plistlib` errors on export | Re-export from Music; ensure file is UTF-8 XML plist. The parser strips a common DOCTYPE if needed. |
 | “Multiple playlists found” | Pass `--playlist-name` matching the `<key>Name</key>` string in the XML. |
 | No Freegal search hits parsed | Selectors in `selectors.py` do not match your site skin—update them. |

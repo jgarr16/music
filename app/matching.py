@@ -36,7 +36,17 @@ def score_track_against_candidate(
     s2 = fuzz.token_set_ratio(f"{st} {sa}", f"{ct} {ca}")
     s3 = fuzz.token_set_ratio(st, ct)
     s4 = fuzz.token_set_ratio(sa, ca) if sa and ca else 0
-    return max(s1, s2, s3 * 0.95 + s4 * 0.05 if ca else s3)
+    combined = max(s1, s2)
+    if ca:
+        combined = max(combined, s3 * 0.95 + s4 * 0.05)
+    else:
+        combined = max(combined, s3)
+    # UI often yields one blob of text; score against full row when title/artist split failed.
+    if cand.raw_text:
+        raw_n = normalize_for_matching(cand.raw_text, strip_noise=strip_noise)
+        s5 = fuzz.token_set_ratio(f"{sa} {st}", raw_n)
+        combined = max(combined, s5 * 0.98)
+    return combined
 
 
 def pick_best_candidate(

@@ -37,3 +37,18 @@ class FreegalSelectors:
 
 
 SELECTORS = FreegalSelectors()
+
+# Tried in order after `search_result_item` if no sane hit count (see freegal_bot).
+SEARCH_RESULT_ROW_FALLBACKS: tuple[str, ...] = (
+    "[class*='search-result']",
+    "[class*='SearchResult']",
+    "[class*='song'][class*='row']",
+    "[class*='track'][class*='row']",
+    "[class*='media'][class*='item']",
+    "mat-list-item",
+    "tbody tr",
+    "table[role='grid'] tr",
+    "article",
+    "[data-cy*='result']",
+    "[data-testid*='result']",
+)

@@ -28,6 +28,11 @@ class PlaywrightConfig(BaseModel):
     navigation_timeout_ms: int = 45000
     action_timeout_ms: int = 20000
     post_login_settle_sec: int = 3
+    # Total wall time (ms) for all result-row selector attempts after one search submit.
+    search_results_wait_ms: int = 6000
+    search_results_poll_ms: int = 400
+    # If a selector matches more than this many nodes, treat it as too broad and try next.
+    search_results_max_nodes: int = 80
 
 
 class AppConfig(BaseSettings):

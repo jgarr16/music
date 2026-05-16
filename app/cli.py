@@ -81,11 +81,26 @@ def cmd_parse(ctx: click.Context, input_path: Path, out_dir: Path, playlist_name
     is_flag=True,
     help="Do not open a browser; every search returns no hits (for CI / tests).",
 )
+@click.option(
+    "--limit",
+    type=click.IntRange(min=1),
+    default=None,
+    help="Only process the first N tracks after sorting by playlist index (smoke tests).",
+)
 @click.pass_context
-def cmd_match(ctx: click.Context, input_path: Path, out_dir: Path, config: Path | None, offline: bool) -> None:
+def cmd_match(
+    ctx: click.Context,
+    input_path: Path,
+    out_dir: Path,
+    config: Path | None,
+    offline: bool,
+    limit: int | None,
+) -> None:
     """Search Freegal per track, fuzzy-score results, write matches.csv and unmatched_tracks.csv."""
     cfg = _load_cfg(config)
-    tracks = read_parsed_tracks(input_path)
+    all_tracks = sorted(read_parsed_tracks(input_path), key=lambda t: t.index)
+    total_in_file = len(all_tracks)
+    tracks = all_tracks[:limit] if limit is not None else all_tracks
     out_dir.mkdir(parents=True, exist_ok=True)
     rows: list = []
 
@@ -112,9 +127,13 @@ def cmd_match(ctx: click.Context, input_path: Path, out_dir: Path, config: Path 
     _, _, unmatched = split_matches(rows)
     write_match_rows(out_dir / "unmatched_tracks.csv", unmatched)
     exact, probable, nf = split_matches(rows)
+    limit_note = ""
+    if limit is not None:
+        limit_note = f"  (subset: first {len(rows)} of {total_in_file} rows in input, --limit {limit})\n"
     print(
         f"\nMatch complete.\n"
-        f"  Total: {len(rows)}\n"
+        f"{limit_note}"
+        f"  Total processed: {len(rows)}\n"
         f"  Exact: {len(exact)}\n"
         f"  Probable: {len(probable)}\n"
         f"  Not found: {len(nf)}\n"
